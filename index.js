@@ -16,7 +16,18 @@ app.get("/", (req, res) => {
 });
 
 //Route to create a new Recipe Entry..
-app.post("")
+app.post("/recipes", async (req, res) => {
+    try {
+        const recipe = new Recipe(req.body);
+        const saveRecipe = await recipe.save();
+        if(!saveRecipe)
+            res.status(404).json({ error: "Error occurred while saving new Recipe. Please check data format and try again." });
+        else 
+            res.status(200).json({ message: "New Recipe saved successfully.", "Recipe-Data": saveRecipe });
+    } catch (error) {
+        res.status(500).json({ error: "Some error occurred with the request to add recipe to DB. Please try again."})
+    }
+})
 
 app.listen(PORT, () => {
   console.log("Server is running on PORT:", PORT);
