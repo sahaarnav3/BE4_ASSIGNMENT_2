@@ -76,9 +76,35 @@ app.get("/recipes/title/:title", async (req, res) => {
   try {
     const recipeData = await Recipe.findOne({ title: req.params.title});
     if(!recipeData)
-        res.status(404).json({ error: "No recipe exists with the given title. Please try again with proper id."});
+        res.status(404).json({ error: "No recipe exists with the given title. Please try again with proper data."});
     else
         res.status(200).json({ message: "Recipe with given title fetched successfully.", "Recipe-Data": recipeData });
+  } catch (error) {
+    res.status(500).json({ error: "Some error occured with the request itself. Please try again." });
+  }
+});
+
+//Route to fetch Recipe Data by it's author.
+app.get("/recipes/author/:authorName", async (req, res) => {
+  try {
+    const recipeData = await Recipe.findOne({ author: req.params.authorName});
+    if(!recipeData)
+        res.status(404).json({ error: "No recipe exists with the given Author. Please try again with proper data."});
+    else
+        res.status(200).json({ message: "Recipe with given Author fetched successfully.", "Recipe-Data": recipeData });
+  } catch (error) {
+    res.status(500).json({ error: "Some error occured with the request itself. Please try again." });
+  }
+});
+
+//Route to fetch all Recipe Data what have "Easy" difficulty.
+app.get("/recipes/difficulty-easy", async (req, res) => {
+  try {
+    const recipeData = await Recipe.find({ difficulty: "Easy"});
+    if(!recipeData)
+        res.status(404).json({ error: "No recipe exists with the given difficulty. Please try again with proper data."});
+    else
+        res.status(200).json({ message: "Recipe with given difficulty fetched successfully.", "Recipe-Data": recipeData });
   } catch (error) {
     res.status(500).json({ error: "Some error occured with the request itself. Please try again." });
   }
